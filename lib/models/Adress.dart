@@ -1,4 +1,4 @@
-import 'package:jsonplaceholder/classes/Geo.dart';
+import 'package:jsonplaceholder/models/Geo.dart';
 
 class Address {
   String street;

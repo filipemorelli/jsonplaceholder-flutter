@@ -1,5 +1,5 @@
-import 'package:jsonplaceholder/classes/Adress.dart';
-import 'package:jsonplaceholder/classes/Company.dart';
+import 'package:jsonplaceholder/models/Adress.dart';
+import 'package:jsonplaceholder/models/Company.dart';
 
 class User {
   int id;
