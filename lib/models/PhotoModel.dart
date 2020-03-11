@@ -1,8 +1,18 @@
-class PhotoModel {
+import 'package:hive/hive.dart';
+
+part 'PhotoModel.g.dart';
+
+@HiveType(typeId: 6)
+class PhotoModel extends HiveObject {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   int albumId;
+  @HiveField(2)
   String title;
+  @HiveField(3)
   String url;
+  @HiveField(4)
   String thumbnailUrl;
 
   PhotoModel({this.id, this.albumId, this.title, this.url, this.thumbnailUrl});

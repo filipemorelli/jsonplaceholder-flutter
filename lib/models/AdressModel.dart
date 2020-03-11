@@ -1,10 +1,19 @@
+import 'package:hive/hive.dart';
 import 'package:jsonplaceholder/models/GeoModel.dart';
 
-class AddressModel {
+part 'AddressModel.g.dart';
+
+@HiveType(typeId: 1)
+class AddressModel extends HiveObject {
+  @HiveField(0)
   String street;
+  @HiveField(1)
   String suite;
+  @HiveField(2)
   String city;
+  @HiveField(3)
   String zipcode;
+  @HiveField(4)
   GeoModel geo;
 
   AddressModel({this.street, this.suite, this.city, this.zipcode, this.geo});

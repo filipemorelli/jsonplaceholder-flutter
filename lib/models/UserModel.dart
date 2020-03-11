@@ -1,13 +1,24 @@
+import 'package:hive/hive.dart';
 import 'package:jsonplaceholder/models/AdressModel.dart';
 import 'package:jsonplaceholder/models/CompanyModel.dart';
 
-class UserModel {
+part 'UserModel.g.dart';
+
+@HiveType(typeId: 0)
+class UserModel extends HiveObject{
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String email;
+  @HiveField(3)
   AddressModel address;
+  @HiveField(4)
   String phone;
+  @HiveField(5)
   String website;
+  @HiveField(6)
   CompanyModel company;
 
   UserModel({
@@ -33,9 +44,9 @@ class UserModel {
         'id': this.id,
         'name': this.name,
         'email': this.email,
-        'address': this.address.toJson(),
+        'address': this.address != null ? this.address.toJson() : {},
         'phone': this.phone,
         'website': this.website,
-        'company': this.company.toJson(),
+        'company': this.company != null ? this.company.toJson() : {},
       };
 }

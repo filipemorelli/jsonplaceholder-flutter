@@ -1,6 +1,14 @@
-class AlbumModel {
+import 'package:hive/hive.dart';
+
+part 'AlbumModel.g.dart';
+
+@HiveType(typeId: 2)
+class AlbumModel extends HiveObject {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   int userId;
+  @HiveField(2)
   String title;
 
   AlbumModel({this.id, this.userId, this.title});
