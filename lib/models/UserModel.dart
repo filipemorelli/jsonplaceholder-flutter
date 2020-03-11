@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:jsonplaceholder/models/AdressModel.dart';
+import 'package:jsonplaceholder/models/AddressModel.dart';
 import 'package:jsonplaceholder/models/CompanyModel.dart';
 
 part 'UserModel.g.dart';
