@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jsonplaceholder/bloc/UserBloc.dart';
 import 'package:jsonplaceholder/globals/constans.dart';
 import 'package:jsonplaceholder/globals/routes.dart';
 import 'package:jsonplaceholder/globals/styles.dart';
@@ -6,6 +7,11 @@ import 'package:jsonplaceholder/globals/styles.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+  MyApp() {
+    UserBloc();
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
