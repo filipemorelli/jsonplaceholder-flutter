@@ -1,21 +1,18 @@
-class Post {
+class AlbumModel {
   int id;
   int userId;
   String title;
-  String body;
 
-  Post({this.id, this.userId, this.title, this.body});
+  AlbumModel({this.id, this.userId, this.title});
 
-  Post.fromJson(Map<String, dynamic> json)
+  AlbumModel.fromJson(Map<String, dynamic> json)
       : this.id = json['id'],
         this.userId = json['userId'],
-        this.title = json['title'],
-        this.body = json['body'];
+        this.title = json['title'];
 
   Map<String, dynamic> toJson() => {
         "id": this.id,
         "userId": this.userId,
         "title": this.title,
-        "body": this.body
       };
 }

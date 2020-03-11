@@ -1,20 +1,20 @@
-import 'package:jsonplaceholder/models/Geo.dart';
+import 'package:jsonplaceholder/models/GeoModel.dart';
 
-class Address {
+class AddressModel {
   String street;
   String suite;
   String city;
   String zipcode;
-  Geo geo;
+  GeoModel geo;
 
-  Address({this.street, this.suite, this.city, this.zipcode, this.geo});
+  AddressModel({this.street, this.suite, this.city, this.zipcode, this.geo});
 
-  Address.fromJson(Map<String, dynamic> json)
+  AddressModel.fromJson(Map<String, dynamic> json)
       : this.street = json['street'],
         this.suite = json['suite'],
         this.city = json["city"],
         this.zipcode = json["zipcode"],
-        this.geo = Geo.fromJson(json["geo"]);
+        this.geo = GeoModel.fromJson(json["geo"]);
 
   Map<String, dynamic> toJson() => {
         "street": this.street,

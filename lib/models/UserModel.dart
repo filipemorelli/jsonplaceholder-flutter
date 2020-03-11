@@ -1,16 +1,16 @@
-import 'package:jsonplaceholder/models/Adress.dart';
-import 'package:jsonplaceholder/models/Company.dart';
+import 'package:jsonplaceholder/models/AdressModel.dart';
+import 'package:jsonplaceholder/models/CompanyModel.dart';
 
-class User {
+class UserModel {
   int id;
   String name;
   String email;
-  Address address;
+  AddressModel address;
   String phone;
   String website;
-  Company company;
+  CompanyModel company;
 
-  User({
+  UserModel({
     this.id,
     this.name,
     this.email,
@@ -20,14 +20,14 @@ class User {
     this.company,
   });
 
-  User.fromJson(Map<String, dynamic> json)
+  UserModel.fromJson(Map<String, dynamic> json)
       : this.id = json['id'],
         this.name = json['name'],
         this.email = json['email'],
-        this.address = Address.fromJson(json['address']),
+        this.address = AddressModel.fromJson(json['address']),
         this.phone = json['phone'],
         this.website = json['website'],
-        this.company = Company.fromJson(json['company']);
+        this.company = CompanyModel.fromJson(json['company']);
 
   Map<String, dynamic> toJson() => {
         'id': this.id,

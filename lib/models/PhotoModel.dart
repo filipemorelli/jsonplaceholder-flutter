@@ -1,13 +1,13 @@
-class Photo {
+class PhotoModel {
   int id;
   int albumId;
   String title;
   String url;
   String thumbnailUrl;
 
-  Photo({this.id, this.albumId, this.title, this.url, this.thumbnailUrl});
+  PhotoModel({this.id, this.albumId, this.title, this.url, this.thumbnailUrl});
 
-  Photo.fromJson(Map<String, dynamic> json)
+  PhotoModel.fromJson(Map<String, dynamic> json)
       : this.id = json['id'],
         this.albumId = json['albumId'],
         this.title = json['title'],

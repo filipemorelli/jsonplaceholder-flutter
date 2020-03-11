@@ -1,10 +1,10 @@
-class Geo {
+class GeoModel {
   String lat;
   String lng;
 
-  Geo({this.lat, this.lng});
+  GeoModel({this.lat, this.lng});
 
-  Geo.fromJson(Map<String, dynamic> json)
+  GeoModel.fromJson(Map<String, dynamic> json)
       : this.lat = json['lat'],
         this.lng = json['lng'];
 
