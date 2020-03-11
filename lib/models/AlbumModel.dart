@@ -1,11 +1,19 @@
-class Album {
+import 'package:hive/hive.dart';
+
+part 'AlbumModel.g.dart';
+
+@HiveType(typeId: 2)
+class AlbumModel extends HiveObject {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   int userId;
+  @HiveField(2)
   String title;
 
-  Album({this.id, this.userId, this.title});
+  AlbumModel({this.id, this.userId, this.title});
 
-  Album.fromJson(Map<String, dynamic> json)
+  AlbumModel.fromJson(Map<String, dynamic> json)
       : this.id = json['id'],
         this.userId = json['userId'],
         this.title = json['title'];

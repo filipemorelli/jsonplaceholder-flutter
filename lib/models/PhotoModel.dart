@@ -1,13 +1,23 @@
-class Photo {
+import 'package:hive/hive.dart';
+
+part 'PhotoModel.g.dart';
+
+@HiveType(typeId: 6)
+class PhotoModel extends HiveObject {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   int albumId;
+  @HiveField(2)
   String title;
+  @HiveField(3)
   String url;
+  @HiveField(4)
   String thumbnailUrl;
 
-  Photo({this.id, this.albumId, this.title, this.url, this.thumbnailUrl});
+  PhotoModel({this.id, this.albumId, this.title, this.url, this.thumbnailUrl});
 
-  Photo.fromJson(Map<String, dynamic> json)
+  PhotoModel.fromJson(Map<String, dynamic> json)
       : this.id = json['id'],
         this.albumId = json['albumId'],
         this.title = json['title'],

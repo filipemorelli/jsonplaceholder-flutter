@@ -1,13 +1,23 @@
-class Comment {
+import 'package:hive/hive.dart';
+
+part 'CommentModel.g.dart';
+
+@HiveType(typeId: 3)
+class CommentModel extends HiveObject {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   int postId;
+  @HiveField(2)
   String name;
+  @HiveField(3)
   String email;
+  @HiveField(4)
   String body;
 
-  Comment({this.id, this.postId, this.name, this.email, this.body});
+  CommentModel({this.id, this.postId, this.name, this.email, this.body});
 
-  Comment.fromJson(Map<String, dynamic> json)
+  CommentModel.fromJson(Map<String, dynamic> json)
       : this.id = json['id'],
         this.postId = json['postId'],
         this.name = json['name'],
