@@ -55,6 +55,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     ),
                     title: Text(userModel.name),
                     subtitle: Text(userModel.email + "\n" + userModel.phone),
+                    isThreeLine: true,
                     trailing: Icon(Icons.chevron_right),
                     onTap: () {
                       UserBloc.instance.userSelected = userModel;

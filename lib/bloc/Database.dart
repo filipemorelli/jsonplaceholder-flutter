@@ -70,6 +70,7 @@ class DataBaseBloc {
     Hive.registerAdapter(AddressModelAdapter());
     Hive.registerAdapter(GeoModelAdapter());
     Hive.registerAdapter(CompanyModelAdapter());
+    Hive.registerAdapter(TodoModelAdapter());
   }
 
   loadUsers() async {
