@@ -77,7 +77,8 @@ class _MainScreenState extends State<MainScreen> {
                     ListTile(
                       leading: Icon(Icons.exit_to_app),
                       title: Text("Sair"),
-                      onTap: () => navigatorKey.currentState..pop()..pop(),
+                      onTap: () => navigatorKey.currentState
+                          .popUntil((route) => route.isFirst),
                     ),
                   ],
                 ),
