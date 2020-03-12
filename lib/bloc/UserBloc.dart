@@ -1,35 +1,26 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:http/http.dart';
-import 'package:jsonplaceholder/globals/functions.dart';
+import 'package:jsonplaceholder/bloc/Database.dart';
 import 'package:jsonplaceholder/models/UserModel.dart';
 
 class UserBloc {
-  StreamController<List<UserModel>> _streamController;
-  String _urlEndPoint = "users";
-
-  Stream<List<UserModel>> get streamUsersModel => _streamController.stream;
-
+  static const String urlEndPoint = "users";
   static final UserBloc instance = UserBloc._();
+
+  StreamController<List<UserModel>> _streamController;
+  Stream<List<UserModel>> get streamUsersModel => _streamController.stream;
+  UserModel userSelected;
 
   factory UserBloc() => instance;
 
   UserBloc._() {
     _streamController = StreamController.broadcast();
-    loadUserApiData();
   }
 
-  Future loadUserApiData() async {
+  Future loadUsers() async {
     try {
-      Response response = await doGetAPIRequest(endPoint: this._urlEndPoint);
-      List<dynamic> result = jsonDecode(response.body);
-      print(result);
-      print(result.runtimeType.toString());
-      List<UserModel> users =
-          result.map((userRaw) => UserModel.fromJson(userRaw)).toList();
-      _streamController.sink.add(users);
+      _streamController.sink.add(DataBaseBloc.instance.boxUser.values.toList());
     } catch (e, stackTrace) {
       log(e.toString(),
           name: "UserBloc.loadUserApiData", stackTrace: stackTrace);

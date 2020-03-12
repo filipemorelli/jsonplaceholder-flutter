@@ -5,7 +5,9 @@ import 'package:jsonplaceholder/models/CompanyModel.dart';
 part 'UserModel.g.dart';
 
 @HiveType(typeId: 0)
-class UserModel extends HiveObject{
+class UserModel extends HiveObject {
+  static const String table = "users";
+
   @HiveField(0)
   int id;
   @HiveField(1)

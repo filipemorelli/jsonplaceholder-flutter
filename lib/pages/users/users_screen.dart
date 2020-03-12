@@ -1,10 +1,8 @@
-import 'dart:developer' as dev;
-
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:jsonplaceholder/bloc/UserBloc.dart';
+import 'package:jsonplaceholder/globals/constans.dart';
+import 'package:jsonplaceholder/globals/functions.dart';
 import 'package:jsonplaceholder/models/UserModel.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 
 class UsersScreen extends StatefulWidget {
   @override
@@ -12,69 +10,62 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
-  List<UserModel> users;
-  Future<bool> initDbFuture;
-  Box<UserModel> boxUser;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    this.initDbFuture = initDb();
-  }
-
-  Future<bool> initDb() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final hiveFolder = join(dir.path, "hive");
-    Hive.init(hiveFolder);
-    try {
-      Hive.registerAdapter(UserModelAdapter());
-    } on HiveError catch (e) {
-      print(e);
-    }
-    if (boxUser == null) {
-      boxUser = await Hive.openBox<UserModel>("users");
-    }
-    this.users = boxUser.values.toList();
-    print("Load users");
-    this.users.forEach(
-        (user) => dev.log(user.toJson().toString(), name: "UserScreen"));
-    return true;
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
+      UserBloc.instance.loadUsers().catchError((e) {
+        showToast(scaffoldKey: _scaffoldKey, text: e.toString());
+      });
+    });
   }
 
   @override
   void dispose() {
-    Hive.box("users").compact();
-    Hive.close();
+    UserBloc.instance.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Users"),
+        title: Text("Escolha um usuário"),
       ),
       body: SafeArea(
-        child: FutureBuilder<bool>(
-          future: initDbFuture,
-          builder: (ctx, snapshot) {
+        child: StreamBuilder<List<UserModel>>(
+          stream: UserBloc.instance.streamUsersModel,
+          builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
-            return Center(
-              child: Text("users"),
+            return Scrollbar(
+              child: ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (ctx, i) {
+                  UserModel userModel = snapshot.data[i];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: Text(userModel.id.toString()),
+                    ),
+                    title: Text(userModel.name),
+                    subtitle: Text(userModel.email + "\n" + userModel.phone),
+                    trailing: Icon(Icons.chevron_right),
+                    onTap: () {
+                      UserBloc.instance.userSelected = userModel;
+                      navigatorKey.currentState.pushNamed("main");
+                    },
+                  );
+                },
+              ),
             );
           },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // UserModel u = new UserModel(
-          //     id: 1, name: "Filipe ${Random().nextInt(100).toString()}");
-          // boxUser.add(u);
-          this.users.forEach((user) async => await user.delete());
-        },
-        child: Icon(Icons.add),
       ),
     );
   }
