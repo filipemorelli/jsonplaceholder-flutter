@@ -11,6 +11,7 @@ import 'package:jsonplaceholder/models/CompanyModel.dart';
 import 'package:jsonplaceholder/models/GeoModel.dart';
 import 'package:jsonplaceholder/models/PhotoModel.dart';
 import 'package:jsonplaceholder/models/PostModel.dart';
+import 'package:jsonplaceholder/models/TodoModel.dart';
 import 'package:jsonplaceholder/models/UserModel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -23,6 +24,7 @@ class DataBaseBloc {
   factory DataBaseBloc() => instance;
 
   Box<UserModel> boxUser;
+  Box<TodoModel> boxTodo;
 
   DataBaseBloc._();
 
@@ -43,6 +45,7 @@ class DataBaseBloc {
 
   Future downloadDatabase() async {
     await loadUsers();
+    await loadTodos();
   }
 
   bool isDataLoaded() => boxUser.values.length == 0;
@@ -51,8 +54,10 @@ class DataBaseBloc {
     if (!Hive.isBoxOpen(UserModel.table)) {
       loadHiveRegisters();
       boxUser = await Hive.openBox<UserModel>(UserModel.table);
+      boxTodo = await Hive.openBox<TodoModel>(TodoModel.table);
     } else {
       boxUser = Hive.box<UserModel>(UserModel.table);
+      boxTodo = Hive.box<TodoModel>(TodoModel.table);
     }
   }
 
@@ -73,5 +78,17 @@ class DataBaseBloc {
     List<UserModel> users =
         result.map((userRaw) => UserModel.fromJson(userRaw)).toList();
     boxUser.addAll(users);
+  }
+
+  loadTodos() async {
+    Response response = await doGetAPIRequest(endPoint: TodoModel.table);
+    List<dynamic> result = jsonDecode(response.body);
+    List<TodoModel> todos =
+        result.map((userRaw) => TodoModel.fromJson(userRaw)).toList();
+    boxTodo.addAll(todos);
+  }
+
+  deleteAll() {
+    Hive.deleteFromDisk();
   }
 }
