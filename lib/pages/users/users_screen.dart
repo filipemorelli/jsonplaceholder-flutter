@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jsonplaceholder/bloc/Database.dart';
 import 'package:jsonplaceholder/bloc/UserBloc.dart';
 import 'package:jsonplaceholder/globals/constans.dart';
 import 'package:jsonplaceholder/globals/functions.dart';
@@ -35,6 +36,9 @@ class _UsersScreenState extends State<UsersScreen> {
       appBar: AppBar(
         title: Text("Escolha um usuário"),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        DataBaseBloc.instance.deleteAll();
+      }),
       body: SafeArea(
         child: StreamBuilder<List<UserModel>>(
           stream: UserBloc.instance.streamUsersModel,
@@ -55,6 +59,7 @@ class _UsersScreenState extends State<UsersScreen> {
                     ),
                     title: Text(userModel.name),
                     subtitle: Text(userModel.email + "\n" + userModel.phone),
+                    isThreeLine: true,
                     trailing: Icon(Icons.chevron_right),
                     onTap: () {
                       UserBloc.instance.userSelected = userModel;

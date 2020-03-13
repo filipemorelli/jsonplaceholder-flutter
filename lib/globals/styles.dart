@@ -12,3 +12,4 @@ final ThemeData mainThemData = ThemeData(
 );
 
 final double spaceSize = 15;
+final double dismissibleInnerSpace = 10;
