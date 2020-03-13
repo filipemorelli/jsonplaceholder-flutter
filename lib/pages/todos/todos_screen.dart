@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jsonplaceholder/bloc/Database.dart';
 import 'package:jsonplaceholder/bloc/UserBloc.dart';
-import 'package:jsonplaceholder/globals/functions.dart';
 import 'package:jsonplaceholder/models/TodoModel.dart';
 import 'package:jsonplaceholder/widgets/DrawerNavigation.dart';
 import 'package:jsonplaceholder/widgets/SecondaryBackGroundTodo.dart';
@@ -16,11 +15,6 @@ class TodosScreen extends StatefulWidget {
 
 class _TodosScreenState extends State<TodosScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +38,7 @@ class _TodosScreenState extends State<TodosScreen> {
                 .where((t) => t.userId == UserBloc.instance.userSelected.id)
                 .toList();
             if (todos.length == 0) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Text("Não tem todo."));
             }
             return Scrollbar(
               child: ListView.builder(

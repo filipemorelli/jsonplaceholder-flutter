@@ -36,9 +36,16 @@ class _UsersScreenState extends State<UsersScreen> {
       appBar: AppBar(
         title: Text("Escolha um usuário"),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        DataBaseBloc.instance.deleteAll();
-      }),
+      floatingActionButton: FloatingActionButton(
+        child: Tooltip(
+          message: "Resetar Dados",
+          child: Icon(Icons.refresh),
+        ),
+        onPressed: () async {
+          await DataBaseBloc.instance.refreshAllData();
+          showToast(scaffoldKey: _scaffoldKey, text: "Dados Restaurados");
+        },
+      ),
       body: SafeArea(
         child: StreamBuilder<List<UserModel>>(
           stream: UserBloc.instance.streamUsersModel,

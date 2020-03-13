@@ -25,6 +25,8 @@ class DataBaseBloc {
 
   Box<UserModel> boxUser;
   Box<TodoModel> boxTodo;
+  Box<AlbumModel> boxAlbum;
+  Box<PhotoModel> boxPhotos;
 
   DataBaseBloc._();
 
@@ -46,6 +48,8 @@ class DataBaseBloc {
   Future downloadDatabase() async {
     await loadUsers();
     await loadTodos();
+    await loadAlbums();
+    await loadPhotos();
   }
 
   bool isDataLoaded() => boxUser.values.length == 0;
@@ -55,9 +59,13 @@ class DataBaseBloc {
       loadHiveRegisters();
       boxUser = await Hive.openBox<UserModel>(UserModel.table);
       boxTodo = await Hive.openBox<TodoModel>(TodoModel.table);
+      boxAlbum = await Hive.openBox<AlbumModel>(AlbumModel.table);
+      boxPhotos = await Hive.openBox<PhotoModel>(PhotoModel.table);
     } else {
       boxUser = Hive.box<UserModel>(UserModel.table);
       boxTodo = Hive.box<TodoModel>(TodoModel.table);
+      boxAlbum = Hive.box<AlbumModel>(AlbumModel.table);
+      boxPhotos = Hive.box<PhotoModel>(PhotoModel.table);
     }
   }
 
@@ -89,7 +97,28 @@ class DataBaseBloc {
     boxTodo.addAll(todos);
   }
 
-  deleteAll() {
-    Hive.deleteFromDisk();
+  loadAlbums() async {
+    Response response = await doGetAPIRequest(endPoint: AlbumModel.table);
+    List<dynamic> result = jsonDecode(response.body);
+    List<AlbumModel> albums =
+        result.map((userRaw) => AlbumModel.fromJson(userRaw)).toList();
+    boxAlbum.addAll(albums);
+  }
+
+  loadPhotos() async {
+    Response response = await doGetAPIRequest(endPoint: PhotoModel.table);
+    List<dynamic> result = jsonDecode(response.body);
+    List<PhotoModel> photos =
+        result.map((userRaw) => PhotoModel.fromJson(userRaw)).toList();
+    boxPhotos.addAll(photos);
+  }
+
+  Future<void> refreshAllData() async {
+    boxUser.toMap().values.forEach((u) => u.delete());
+    boxTodo.toMap().values.forEach((t) => t.delete());
+    boxAlbum.toMap().values.forEach((a) => a.delete());
+    boxPhotos.toMap().values.forEach((p) => p.delete());
+    await loadHiveBoxes();
+    return await downloadDatabase();
   }
 }
