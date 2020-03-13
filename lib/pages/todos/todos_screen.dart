@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jsonplaceholder/bloc/TodoBloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:jsonplaceholder/bloc/Database.dart';
+import 'package:jsonplaceholder/bloc/UserBloc.dart';
 import 'package:jsonplaceholder/globals/functions.dart';
 import 'package:jsonplaceholder/models/TodoModel.dart';
 import 'package:jsonplaceholder/widgets/DrawerNavigation.dart';
@@ -16,11 +19,6 @@ class _TodosScreenState extends State<TodosScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((duration) {
-      TodoBloc.instance.loadTodos().catchError((e) {
-        showToast(scaffoldKey: _scaffoldKey, text: e.toString());
-      });
-    });
   }
 
   @override
@@ -37,34 +35,80 @@ class _TodosScreenState extends State<TodosScreen> {
         ),
       ),
       body: SafeArea(
-        child: StreamBuilder<List<TodoModel>>(
-          stream: TodoBloc.instance.streamTodosModel,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+        child: ValueListenableBuilder<Box<TodoModel>>(
+          valueListenable: DataBaseBloc.instance.boxTodo.listenable(),
+          // stream: TodoBloc.instance.streamTodosModel,
+          builder: (context, box, widget) {
+            var todos = box.values
+                .where((t) => t.userId == UserBloc.instance.userSelected.id)
+                .toList();
+            if (todos.length == 0) {
               return Center(child: CircularProgressIndicator());
             }
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (ctx, index) {
-                TodoModel todo = snapshot.data[index];
-                return ListTile(
-                  title: Text(todo.title),
-                  leading: IconButton(
-                    icon: Icon(todo.completed
-                        ? Icons.check_box
-                        : Icons.check_box_outline_blank),
-                    onPressed: () async {
-                      todo.completed = !todo.completed;
-                      await todo.save();
+            return Scrollbar(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: todos.length,
+                itemBuilder: (ctx, index) {
+                  TodoModel todo = box.getAt(index);
+                  return Dismissible(
+                    key: Key(todo.id.toString()),
+                    background: SizedBox(),
+                    direction: DismissDirection.endToStart,
+                    secondaryBackground: Container(
+                      color: Colors.red,
+                      padding: EdgeInsets.only(right: 10),
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Text(
+                              "Excluir Todo",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
+                    ),
+                    onDismissed: (DismissDirection dismissDirection) {
+                      todo.delete();
+                      showToast(
+                          scaffoldKey: _scaffoldKey,
+                          text: todo.title + " removido.");
                     },
-                  ),
-                  trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () async {
-                        await todo.delete();
-                      }),
-                );
-              },
+                    child: ListTile(
+                      title: Text(
+                        todo.title,
+                        style: TextStyle(
+                            decoration: todo.completed
+                                ? TextDecoration.lineThrough
+                                : null),
+                      ),
+                      leading: IconButton(
+                        icon: Icon(todo.completed
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank),
+                        onPressed: () async {
+                          todo.completed = !todo.completed;
+                          await todo.save(scaffoldKey: _scaffoldKey);
+                        },
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () async {
+                          await todo.delete(scaffoldKey: _scaffoldKey);
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
           },
         ),

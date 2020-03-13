@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:jsonplaceholder/globals/functions.dart';
 
 part 'TodoModel.g.dart';
 
@@ -29,4 +31,28 @@ class TodoModel extends HiveObject {
         "title": this.title,
         "completed": this.completed,
       };
+
+  @override
+  Future<void> delete({GlobalKey<ScaffoldState> scaffoldKey}) {
+    showToast(scaffoldKey: scaffoldKey, text: "$title removido.");
+    // Do DELETE request
+    return super.delete();
+  }
+
+  @override
+  Future<void> save({GlobalKey<ScaffoldState> scaffoldKey}) {
+    if (!super.isInBox) {
+      showToast(scaffoldKey: scaffoldKey, text: "$title cadastrado.");
+      // Do POST requset
+    } else {
+      showToast(scaffoldKey: scaffoldKey, text: "$title atualizado");
+      // Do PUT request
+    }
+    return super.save();
+  }
+
+  void changeComplete({GlobalKey<ScaffoldState> scaffoldKey}) async {
+    completed = !completed;
+    await save(scaffoldKey: scaffoldKey);
+  }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:jsonplaceholder/bloc/UserBloc.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
-import 'package:jsonplaceholder/globals/constans.dart';
 import 'package:jsonplaceholder/widgets/DrawerNavigation.dart';
 
 class MainScreen extends StatefulWidget {
