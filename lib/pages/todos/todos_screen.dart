@@ -38,7 +38,7 @@ class _TodosScreenState extends State<TodosScreen> {
                 .where((t) => t.userId == UserBloc.instance.userSelected.id)
                 .toList();
             if (todos.length == 0) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Text("Não tem todo."));
             }
             return Scrollbar(
               child: ListView.builder(

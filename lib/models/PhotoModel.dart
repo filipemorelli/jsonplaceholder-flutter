@@ -4,6 +4,8 @@ part 'PhotoModel.g.dart';
 
 @HiveType(typeId: 6)
 class PhotoModel extends HiveObject {
+  static const String table = "photos";
+
   @HiveField(0)
   int id;
   @HiveField(1)
