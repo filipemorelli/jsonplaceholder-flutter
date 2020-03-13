@@ -7,6 +7,7 @@ import 'package:jsonplaceholder/bloc/UserBloc.dart';
 import 'package:jsonplaceholder/globals/functions.dart';
 import 'package:jsonplaceholder/models/TodoModel.dart';
 import 'package:jsonplaceholder/widgets/DrawerNavigation.dart';
+import 'package:jsonplaceholder/widgets/SecondaryBackGroundTodo.dart';
 
 class TodosScreen extends StatefulWidget {
   @override
@@ -55,32 +56,9 @@ class _TodosScreenState extends State<TodosScreen> {
                     key: Key(todo.id.toString()),
                     background: SizedBox(),
                     direction: DismissDirection.endToStart,
-                    secondaryBackground: Container(
-                      color: Colors.red,
-                      padding: EdgeInsets.only(right: 10),
-                      alignment: Alignment.centerRight,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Text(
-                              "Excluir Todo",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          )
-                        ],
-                      ),
-                    ),
+                    secondaryBackground: DismissibleBackgroundTodo(),
                     onDismissed: (DismissDirection dismissDirection) {
-                      todo.delete();
-                      showToast(
-                          scaffoldKey: _scaffoldKey,
-                          text: todo.title + " removido.");
+                      todo.delete(scaffoldKey: _scaffoldKey);
                     },
                     child: ListTile(
                       title: Text(
@@ -94,10 +72,7 @@ class _TodosScreenState extends State<TodosScreen> {
                         icon: Icon(todo.completed
                             ? Icons.check_box
                             : Icons.check_box_outline_blank),
-                        onPressed: () async {
-                          todo.completed = !todo.completed;
-                          await todo.save(scaffoldKey: _scaffoldKey);
-                        },
+                        onPressed: todo.changeComplete,
                       ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
