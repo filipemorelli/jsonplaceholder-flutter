@@ -4,6 +4,8 @@ part 'AlbumModel.g.dart';
 
 @HiveType(typeId: 2)
 class AlbumModel extends HiveObject {
+  static const String table = "albums";
+
   @HiveField(0)
   int id;
   @HiveField(1)

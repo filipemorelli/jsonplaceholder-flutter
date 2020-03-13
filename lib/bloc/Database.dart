@@ -25,6 +25,7 @@ class DataBaseBloc {
 
   Box<UserModel> boxUser;
   Box<TodoModel> boxTodo;
+  Box<AlbumModel> boxAlbum;
 
   DataBaseBloc._();
 
@@ -46,6 +47,7 @@ class DataBaseBloc {
   Future downloadDatabase() async {
     await loadUsers();
     await loadTodos();
+    await loadAlbums();
   }
 
   bool isDataLoaded() => boxUser.values.length == 0;
@@ -55,9 +57,11 @@ class DataBaseBloc {
       loadHiveRegisters();
       boxUser = await Hive.openBox<UserModel>(UserModel.table);
       boxTodo = await Hive.openBox<TodoModel>(TodoModel.table);
+      boxAlbum = await Hive.openBox<AlbumModel>(AlbumModel.table);
     } else {
       boxUser = Hive.box<UserModel>(UserModel.table);
       boxTodo = Hive.box<TodoModel>(TodoModel.table);
+      boxAlbum = Hive.box<AlbumModel>(AlbumModel.table);
     }
   }
 
@@ -87,6 +91,14 @@ class DataBaseBloc {
     List<TodoModel> todos =
         result.map((userRaw) => TodoModel.fromJson(userRaw)).toList();
     boxTodo.addAll(todos);
+  }
+
+  loadAlbums() async {
+    Response response = await doGetAPIRequest(endPoint: AlbumModel.table);
+    List<dynamic> result = jsonDecode(response.body);
+    List<AlbumModel> albums =
+        result.map((userRaw) => AlbumModel.fromJson(userRaw)).toList();
+    boxAlbum.addAll(albums);
   }
 
   deleteAll() {

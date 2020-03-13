@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jsonplaceholder/bloc/Database.dart';
 import 'package:jsonplaceholder/bloc/UserBloc.dart';
-import 'package:jsonplaceholder/globals/functions.dart';
 import 'package:jsonplaceholder/models/TodoModel.dart';
 import 'package:jsonplaceholder/widgets/DrawerNavigation.dart';
 import 'package:jsonplaceholder/widgets/SecondaryBackGroundTodo.dart';

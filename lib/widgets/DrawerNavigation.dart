@@ -41,7 +41,10 @@ class DrawerNavigation extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.photo_album),
                     title: Text("Albuns"),
-                    onTap: () {},
+                    onTap: () {
+                      navigatorKey.currentState.pop();
+                      navigatorKey.currentState.pushNamed("albums");
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.book),
