@@ -27,6 +27,7 @@ class DataBaseBloc {
   Box<TodoModel> boxTodo;
   Box<AlbumModel> boxAlbum;
   Box<PhotoModel> boxPhotos;
+  Box<PostModel> boxPosts;
 
   DataBaseBloc._();
 
@@ -50,6 +51,7 @@ class DataBaseBloc {
     await loadTodos();
     await loadAlbums();
     await loadPhotos();
+    await loadPosts();
   }
 
   bool isDataLoaded() => boxUser.values.length == 0;
@@ -61,11 +63,13 @@ class DataBaseBloc {
       boxTodo = await Hive.openBox<TodoModel>(TodoModel.table);
       boxAlbum = await Hive.openBox<AlbumModel>(AlbumModel.table);
       boxPhotos = await Hive.openBox<PhotoModel>(PhotoModel.table);
+      boxPosts = await Hive.openBox<PostModel>(PostModel.table);
     } else {
       boxUser = Hive.box<UserModel>(UserModel.table);
       boxTodo = Hive.box<TodoModel>(TodoModel.table);
       boxAlbum = Hive.box<AlbumModel>(AlbumModel.table);
       boxPhotos = Hive.box<PhotoModel>(PhotoModel.table);
+      boxPosts = Hive.box<PostModel>(PostModel.table);
     }
   }
 
@@ -92,8 +96,7 @@ class DataBaseBloc {
   loadTodos() async {
     Response response = await doGetAPIRequest(endPoint: TodoModel.table);
     List<dynamic> result = jsonDecode(response.body);
-    List<TodoModel> todos =
-        result.map((userRaw) => TodoModel.fromJson(userRaw)).toList();
+    List<TodoModel> todos = result.map((t) => TodoModel.fromJson(t)).toList();
     boxTodo.addAll(todos);
   }
 
@@ -101,7 +104,7 @@ class DataBaseBloc {
     Response response = await doGetAPIRequest(endPoint: AlbumModel.table);
     List<dynamic> result = jsonDecode(response.body);
     List<AlbumModel> albums =
-        result.map((userRaw) => AlbumModel.fromJson(userRaw)).toList();
+        result.map((a) => AlbumModel.fromJson(a)).toList();
     boxAlbum.addAll(albums);
   }
 
@@ -109,8 +112,15 @@ class DataBaseBloc {
     Response response = await doGetAPIRequest(endPoint: PhotoModel.table);
     List<dynamic> result = jsonDecode(response.body);
     List<PhotoModel> photos =
-        result.map((userRaw) => PhotoModel.fromJson(userRaw)).toList();
+        result.map((p) => PhotoModel.fromJson(p)).toList();
     boxPhotos.addAll(photos);
+  }
+
+  loadPosts() async {
+    Response response = await doGetAPIRequest(endPoint: PostModel.table);
+    List<dynamic> result = jsonDecode(response.body);
+    List<PostModel> photos = result.map((p) => PostModel.fromJson(p)).toList();
+    boxPosts.addAll(photos);
   }
 
   Future<void> refreshAllData() async {
@@ -118,6 +128,7 @@ class DataBaseBloc {
     boxTodo.toMap().values.forEach((t) => t.delete());
     boxAlbum.toMap().values.forEach((a) => a.delete());
     boxPhotos.toMap().values.forEach((p) => p.delete());
+    boxPosts.toMap().values.forEach((p) => p.delete());
     await loadHiveBoxes();
     return await downloadDatabase();
   }

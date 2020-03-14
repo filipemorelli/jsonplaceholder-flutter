@@ -4,6 +4,7 @@ import 'package:jsonplaceholder/pages/albums/albums_screen.dart';
 import 'package:jsonplaceholder/pages/main/main_screen.dart';
 import 'package:jsonplaceholder/pages/photos/photo_detail.dart';
 import 'package:jsonplaceholder/pages/photos/photo_screen.dart';
+import 'package:jsonplaceholder/pages/posts/post_screen.dart';
 import 'package:jsonplaceholder/pages/todos/todos_screen.dart';
 import 'package:jsonplaceholder/pages/users/users_screen.dart';
 
@@ -34,6 +35,10 @@ Route<dynamic> onGeneratedRoutes(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (_) => PhotoDetail(photoModel: settings.arguments),
           settings: settings);
+      break;
+    case "posts":
+      return MaterialPageRoute(
+          builder: (_) => PostsScreen(), settings: settings);
       break;
     default:
       return MaterialPageRoute(

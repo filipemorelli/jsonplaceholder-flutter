@@ -49,7 +49,10 @@ class DrawerNavigation extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.book),
                     title: Text("Posts"),
-                    onTap: () {},
+                    onTap: () {
+                      navigatorKey.currentState.pop();
+                      navigatorKey.currentState.pushNamed("posts");
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.exit_to_app),

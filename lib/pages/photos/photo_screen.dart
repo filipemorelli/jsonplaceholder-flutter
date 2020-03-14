@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jsonplaceholder/bloc/Database.dart';
-import 'package:jsonplaceholder/bloc/UserBloc.dart';
 import 'package:jsonplaceholder/globals/constans.dart';
 import 'package:jsonplaceholder/globals/styles.dart';
 import 'package:jsonplaceholder/models/AlbumModel.dart';
