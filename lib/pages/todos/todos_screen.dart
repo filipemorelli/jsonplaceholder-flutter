@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jsonplaceholder/bloc/Database.dart';
 import 'package:jsonplaceholder/bloc/UserBloc.dart';
+import 'package:jsonplaceholder/globals/functions.dart';
 import 'package:jsonplaceholder/models/TodoModel.dart';
 import 'package:jsonplaceholder/widgets/DrawerNavigation.dart';
 import 'package:jsonplaceholder/widgets/SecondaryBackGroundTodo.dart';
@@ -30,6 +31,7 @@ class _TodosScreenState extends State<TodosScreen> {
         ),
       ),
       body: SafeArea(
+        bottom: false,
         child: ValueListenableBuilder<Box<TodoModel>>(
           valueListenable: DataBaseBloc.instance.boxTodo.listenable(),
           // stream: TodoBloc.instance.streamTodosModel,
@@ -81,6 +83,13 @@ class _TodosScreenState extends State<TodosScreen> {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showToast(scaffoldKey: _scaffoldKey, text: "Não implementado ainda.");
+        },
+        label: Text("New Todo"),
+        icon: Icon(Icons.add),
       ),
       drawerDragStartBehavior: DragStartBehavior.down,
       drawer: DrawerNavigation(),
