@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jsonplaceholder/bloc/Database.dart';
 import 'package:jsonplaceholder/bloc/UserBloc.dart';
 import 'package:jsonplaceholder/globals/constans.dart';
+import 'package:jsonplaceholder/globals/functions.dart';
 import 'package:jsonplaceholder/models/AlbumModel.dart';
 import 'package:jsonplaceholder/widgets/DrawerNavigation.dart';
 
@@ -30,6 +31,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
         ),
       ),
       body: SafeArea(
+        bottom: false,
         child: ValueListenableBuilder<Box<AlbumModel>>(
           valueListenable: DataBaseBloc.instance.boxAlbum.listenable(),
           builder: (ctx, box, widget) {
@@ -61,6 +63,13 @@ class _AlbumScreenState extends State<AlbumScreen> {
       ),
       drawerDragStartBehavior: DragStartBehavior.down,
       drawer: DrawerNavigation(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showToast(scaffoldKey: _scaffoldKey, text: "Não implementado ainda.");
+        },
+        label: Text("New Album"),
+        icon: Icon(Icons.add),
+      ),
     );
   }
 }
